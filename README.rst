@@ -5,4 +5,4 @@ Installation
 
 .. code:: sh
 
-    pip install passive
+    pip install weary

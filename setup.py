@@ -7,9 +7,9 @@ with open("README.rst") as readme_file:
 packages = find_packages()
 
 setup(
-    name="passive",
-    version="1.0.0",
-    description="passive",
+    name="weary",
+    version="0.0.1",
+    description="weary",
     long_description=readme,
     author="Bogdan Mustiata",
     author_email="bogdan.mustiata@gmail.com",
@@ -18,6 +18,6 @@ setup(
     packages=packages,
     package_data={
         "": ["*.txt", "*.rst"],
-        "passive": ["py.typed"],
+        "weary": ["py.typed"],
     },
 )
