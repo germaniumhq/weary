@@ -38,6 +38,6 @@ def resolve_property(self: ApplicationModel, context) -> List[str]:
 
 class TestWearyPropertyResolving(TestCase):
     def test_resolve_property(self):
-        app = weary.create(ApplicationModel)
+        app = ApplicationModel()
 
         self.assertEqual(["1", "2", "3"], app.versions())

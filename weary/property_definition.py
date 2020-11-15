@@ -6,11 +6,12 @@ T = TypeVar("T")
 
 
 def property(clazz, function_name) -> Callable[..., Callable[..., T]]:
-    def wrapper_builder(f: Callable[..., T]) -> Callable[..., T]:
-        if clazz not in method_registrations:
-            method_registrations[clazz] = dict()
+    if not hasattr(clazz, "_weary_base"):
+        raise Exception("You can only override properties for classes decorated "
+                        "with `@weary.model`.")
 
-        method_registrations[clazz][function_name] = f
+    def wrapper_builder(f: Callable[..., T]) -> Callable[..., T]:
+        method_registrations[clazz._weary_base][function_name] = f
         return f
 
     return wrapper_builder
