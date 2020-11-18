@@ -1,3 +1,4 @@
+import unittest
 from typing import List
 from unittest import TestCase
 
@@ -17,9 +18,6 @@ class TestEnvironment:
 # generated
 @weary.model
 class ApplicationModel:
-    def __init__(self) -> None:
-        pass
-
     @property
     def versions(self) -> List[str]:
         raise Exception("No provider for ApplicationModel.versions")
@@ -62,3 +60,11 @@ class TestWearyPropertyResolving(TestCase):
         self.assertEqual([], app.environments)
         self.assertEqual([], app.environments)
         self.assertEqual(1, call_count)
+
+    def test_constructor_overrides_property(self):
+        app = ApplicationModel(versions=["a", "b", "c"])
+        self.assertEqual(["a", "b", "c"], app.versions)
+
+    @unittest.expectedFailure
+    def test_wrong_property_in_constructor_raises_exception(self):
+        ApplicationModel(appversions=["a", "b", "c"])

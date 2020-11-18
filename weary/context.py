@@ -9,22 +9,28 @@ class WearyContext:
         super(WearyContext, self).__init__()
 
 
-def _decorate_with_context(method_impl: Callable) -> Callable:
-    called = False
-    result = None
+def _decorate_with_context(property_name: str, method_impl: Callable) -> Callable:
+    """
+    Normally a function for a property has only the `self`
+    as an attribute. Since we want to also pass some context
+    to that function, we wrap the call in this function that
+    creates the context, and passes it. The `decorated_function`
+    still has only `self` as an argument.
+
+    :param property_name:
+    :param method_impl:
+    :return:
+    """
 
     @functools.wraps(method_impl)
     def decorated_function(self):
-        nonlocal called
-        nonlocal result
-
-        if called:
-            return result
+        if property_name in self._data:
+            return self._data[property_name]
 
         ctx = WearyContext()
 
         result = method_impl(self, ctx)
-        called = True
+        self._data[property_name] = result
 
         return result
 
