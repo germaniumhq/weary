@@ -1,10 +1,10 @@
 import functools
 from typing import TypeVar, Callable
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
-class WearyContext():
+class WearyContext:
     def __init__(self) -> None:
         super(WearyContext, self).__init__()
 

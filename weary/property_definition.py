@@ -9,8 +9,10 @@ T = TypeVar("T")
 
 def property(clazz, function_name) -> Callable[..., Callable[..., T]]:
     if not hasattr(clazz, "_weary_base"):
-        raise Exception("You can only override properties for classes decorated "
-                        "with `@weary.model`.")
+        raise Exception(
+            "You can only override properties for classes decorated "
+            "with `@weary.model`."
+        )
 
     def wrapper_builder(f: Callable[..., T]) -> Callable[..., T]:
         context_aware_function = _decorate_with_context(f)
@@ -18,7 +20,8 @@ def property(clazz, function_name) -> Callable[..., Callable[..., T]]:
         setattr(
             clazz._weary_base,
             function_name,
-            types.DynamicClassAttribute(context_aware_function, clazz._weary_base))
+            types.DynamicClassAttribute(context_aware_function, clazz._weary_base),
+        )
 
         return f
 
