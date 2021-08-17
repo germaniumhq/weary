@@ -1,36 +1,13 @@
-import types
-from typing import Callable, TypeVar
+import functools
+from typing import Callable
 
-from weary.context import _decorate_with_context
-from weary.method_registrations import method_registrations
-
-T = TypeVar("T")
+_property = property
 
 
-def property(clazz, property_name) -> Callable[..., Callable[..., T]]:
-    if not hasattr(clazz, "_weary_base"):
-        raise Exception(
-            "You can only override properties for classes decorated "
-            "with `@weary.model`."
-        )
+def property(fn: Callable):
+    @_property
+    @functools.wraps(fn)
+    def not_implemented_wrapper(*args, **kw):
+        raise NotImplementedError(f"The property definition wasn't implemented for {fn}")
 
-    def wrapper_builder(f: Callable[..., T]) -> Callable[..., T]:
-        context_aware_function = _decorate_with_context(property_name, f)
-        method_registrations[clazz._weary_base][property_name] = f
-        property_definition = types.DynamicClassAttribute(
-            context_aware_function, clazz._weary_base
-        )
-        setattr(
-            clazz._weary_base,
-            property_name,
-            property_definition,
-        )
-
-        def set_value(self, value) -> None:
-            self._data[property_name] = value
-
-        property_definition.fset = set_value  # type: ignore
-
-        return f
-
-    return wrapper_builder
+    return not_implemented_wrapper

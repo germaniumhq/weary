@@ -31,7 +31,7 @@ call_count = 0
 
 
 # user
-@weary.property(ApplicationModel, "environments")
+@weary.implementation(ApplicationModel, "environments")
 def resolve_environments_property(
     self: ApplicationModel, context: WearyContext
 ) -> List[TestEnvironment]:
@@ -42,7 +42,7 @@ def resolve_environments_property(
 
 
 # user
-@weary.property(ApplicationModel, "versions")
+@weary.implementation(ApplicationModel, "versions")
 def resolve_versions_property(
     self: ApplicationModel, context: WearyContext
 ) -> List[str]:

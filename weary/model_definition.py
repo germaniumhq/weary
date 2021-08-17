@@ -24,13 +24,22 @@ def _create(t: Type[T], *args, **kw) -> T:
     :param t:
     :return:
     """
-    result = t()  # type: ignore
+    constructorkw = dict()
+    propertykw = dict()
+
+    for key, value in kw.items():
+        if key not in t.__dict__:
+            constructorkw[key] = value
+        else:
+            propertykw[key] = value
+
+    result = t(*args, **constructorkw)  # type: ignore
     result._data = dict()  # type: ignore
 
     if t not in method_registrations:
         raise Exception(f"{t} was not registered with @weary.model")
 
-    for property_name, property_value in kw.items():
+    for property_name, property_value in propertykw.items():
         if not hasattr(result, property_name):
             raise Exception(
                 f"{property_name} is not defined on the @weary.model " f"class."
