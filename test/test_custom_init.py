@@ -22,7 +22,7 @@ def data_store_data_count_implementation(self, context):
     return len(self.data)
 
 
-class WutTest(unittest.TestCase):
+class CustomConstructorTest(unittest.TestCase):
     def test_custom_constructor(self):
         ds = DataStore(data=[1, 2, 3, 4])
         self.assertEquals(4, ds.data_count)
